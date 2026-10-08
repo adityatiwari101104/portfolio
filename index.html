@@ -518,6 +518,26 @@ figure { margin: 0; min-width: 0; }
 .cv-map .nd circle { fill: var(--linen); stroke: #1d1b18; stroke-width: 1.6; }
 .cv-map .nd circle.on { fill: var(--yellow); }
 .cv-map .lb text { font-family: var(--mono); font-size: 10.5px; fill: #3a352d; text-anchor: middle; letter-spacing: .02em; }
+.cv-cards { position: relative; width: 100%; margin: auto 0; display: grid; grid-template-columns: 1fr 1fr; gap: 1.3em 1.1em; padding: .6em .3em; text-align: left; }
+.cc { position: relative; background: #fffdf7; border: 1.5px solid #1d1b18; border-radius: 6px; padding: .85em .85em .75em; box-shadow: 3px 4px 0 rgba(29,27,24,.85); transform: rotate(var(--r)) translate(0,0); transition: transform .5s cubic-bezier(.2,.9,.3,1.25), box-shadow .3s;
+  background-image: repeating-linear-gradient(0deg, transparent 0 1.25em, rgba(29,27,24,.06) 1.25em calc(1.25em + 1px)); }
+.cc .tape { position: absolute; top: -.7em; left: 50%; width: 3.6em; height: 1.2em; transform: translateX(-50%) rotate(calc(var(--r) * -2)); background: rgba(246,207,69,.55); border-left: 1px dashed rgba(29,27,24,.18); border-right: 1px dashed rgba(29,27,24,.18); }
+.cc.c2 .tape, .cc.c3 .tape { background: rgba(220,210,190,.75); }
+.cc .cn { display: block; font-family: var(--mono); font-size: .56em; letter-spacing: .12em; text-transform: uppercase; color: #7a7061; }
+.cc b { display: block; font-family: var(--sans); font-weight: 800; font-variation-settings: "wdth" 108; font-size: 1.22em; letter-spacing: -.02em; line-height: 1.05; margin: .25em 0 .3em; color: #1d1b18; }
+.cc .cs { display: block; font-family: "EB Garamond", Georgia, serif; font-style: italic; font-size: .92em; color: #4a4338; line-height: 1.2; }
+.cc .cs em { font-style: normal; font-weight: 600; font-family: var(--sans); background: linear-gradient(transparent 55%, rgba(246,207,69,.8) 55%); padding: 0 .1em; }
+.cc.c1 { --r: -3deg; } .cc.c2 { --r: 2.5deg; margin-top: .6em; } .cc.c3 { --r: 1.5deg; } .cc.c4 { --r: -2deg; margin-top: .4em; }
+.cc.c1 { background-color: #fff6d6; }
+.leaf:not(.turned) .face.cover:hover .cc.c1 { transform: rotate(-6deg) translate(-.4em,-.3em); }
+.leaf:not(.turned) .face.cover:hover .cc.c2 { transform: rotate(5deg) translate(.4em,-.4em); }
+.leaf:not(.turned) .face.cover:hover .cc.c3 { transform: rotate(-1deg) translate(-.3em,.3em); }
+.leaf:not(.turned) .face.cover:hover .cc.c4 { transform: rotate(-4.5deg) translate(.4em,.3em); }
+.leaf:not(.turned) .face.cover:hover .cc { box-shadow: 5px 7px 0 rgba(29,27,24,.85); }
+.wb .cc { opacity: 0; translate: 0 10px; }
+.wb.drawn .cc { opacity: 1; translate: 0 0; transition: transform .5s cubic-bezier(.2,.9,.3,1.25), box-shadow .3s, opacity .5s ease, translate .6s cubic-bezier(.2,.9,.3,1.2); }
+.wb.drawn .cc.c2 { transition-delay: 0s, 0s, .12s, .12s; } .wb.drawn .cc.c3 { transition-delay: 0s, 0s, .24s, .24s; } .wb.drawn .cc.c4 { transition-delay: 0s, 0s, .36s, .36s; }
+@media (prefers-reduced-motion: reduce) { .cc { transition: none !important; } .wb .cc { opacity: 1; translate: none; } }
 .cv-foot { margin-top: 0; width: 100%; border-top: 1px solid rgba(29,27,24,.35); padding-top: .8em; font-family: "EB Garamond", Georgia, serif; font-style: italic; font-size: 1em; color: #4a4338; text-align: left; }
 .cover .seal { position: absolute; right: 1.4em; bottom: 1.1em; width: 3.2em; height: 3.2em; border-radius: 50%; background: var(--yellow); border: 1.5px solid #1d1b18; display: grid; place-content: center; font-family: "EB Garamond", Georgia, serif; font-weight: 600; font-size: 1.5em; line-height: .85; transform: rotate(-10deg); box-shadow: 2px 2px 0 rgba(29,27,24,.85); }
 .cover .seal b { font-size: 1.5em; font-weight: 600; line-height: .8; }
@@ -1844,11 +1864,12 @@ const LINKS = [
     const COVER = `<div class="face front cover"><span class="spine" aria-hidden="true"></span>
 <div class="cv-top"><span>Vol. I</span><span>Ex libris</span><span>2026</span></div>
 <div class="t">The Work</div><div class="by">of Aditya Tiwari</div>
-<svg class="cv-map" viewBox="0 -6 300 160" aria-hidden="true">
-<g class="lk"><path d="M52 44 L150 26"/><path d="M150 26 L246 60"/><path d="M52 44 L118 112"/><path d="M118 112 L246 60"/><path d="M150 26 L118 112"/></g>
-<g class="nd"><circle cx="52" cy="44" r="7"/><circle cx="150" cy="26" r="7" class="on"/><circle cx="246" cy="60" r="7"/><circle cx="118" cy="112" r="7"/></g>
-<g class="lb"><text x="52" y="28">writeupsc</text><text x="150" y="10">ContribOS</text><text x="246" y="44">Praman Setu</text><text x="118" y="134">CSC AI Copilot</text></g>
-</svg>
+<div class="cv-cards" aria-hidden="true">
+<div class="cc c1"><i class="tape"></i><span class="cn">I · solo</span><b>ContribOS</b><span class="cs"><em>980</em> PyPI downloads, week one</span></div>
+<div class="cc c2"><i class="tape"></i><span class="cn">II · live</span><b>writeupsc</b><span class="cs"><em>800+</em> sign-ups</span></div>
+<div class="cc c3"><i class="tape"></i><span class="cn">III · hackathon win</span><b>Praman Setu</b><span class="cs"><em>0.89</em> match precision</span></div>
+<div class="cc c4"><i class="tape"></i><span class="cn">IV · hackathon win</span><b>CSC AI Copilot</b><span class="cs">WhatsApp bot, <em>live</em> API</span></div>
+</div>
 <div class="cv-foot"><span>Four projects, told properly.</span><em>click to open →</em></div>
 <span class="seal" aria-hidden="true"><b>4</b><small>chapters</small></span>
 <span class="hint">click to open</span></div>`;
@@ -1947,10 +1968,14 @@ const LINKS = [
     const start = () => {
       if (wb.classList.contains("drawn")) return;
       wb.classList.add("drawn");
-      setTimeout(() => { if (!opened && cur === 0) step(1); wb.classList.add("opened"); }, reduce ? 0 : 1250);
+      setTimeout(() => { if (!opened && cur === 0) step(1); wb.classList.add("opened"); }, reduce ? 0 : 3200);
     };
     if ("IntersectionObserver" in window) {
-      const io = new IntersectionObserver(es => { if (es.some(e => e.isIntersecting)) { start(); io.disconnect(); } }, { threshold: 0.45 });
+      const really = () => { const r = book.getBoundingClientRect(), ib = document.getElementById("intro"); return (!ib || ib.classList.contains("gone")) && r.top < innerHeight * .75 && r.bottom > innerHeight * .25; };
+      let seen = false, retry = 0;
+      const tryStart = () => { clearTimeout(retry); if (wb.classList.contains("drawn")) return; if (really()) { start(); io.disconnect(); } else if (seen) retry = setTimeout(tryStart, 400); };
+      const io = new IntersectionObserver(es => { seen = es.some(e => e.isIntersecting); if (seen) tryStart(); }, { threshold: [0.25, 0.45, 0.7] });
+      addEventListener("scroll", function chk() { if (wb.classList.contains("drawn")) { removeEventListener("scroll", chk); return; } if (really()) { start(); io.disconnect(); removeEventListener("scroll", chk); } }, { passive: true });
       io.observe(book);
     } else start();
   })();
