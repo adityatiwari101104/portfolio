@@ -54,6 +54,27 @@ button { font: inherit; color: inherit; }
 .bar nav { display: flex; flex-wrap: wrap; gap: 0.25rem 1.4rem; font-family: var(--mono); font-size: 0.8rem; }
 .bar nav a { text-decoration: none; color: var(--ink-2); }
 .bar nav a:hover { color: var(--ink); text-decoration: underline; text-decoration-color: var(--yellow); text-decoration-thickness: 3px; }
+.bar { position: relative; }
+.bar nav a em { display: none; }
+.menu-btn { display: none; }
+@media (max-width: 640px) {
+  .menu-btn { display: inline-flex; align-items: center; gap: .55rem; font: 600 .78rem/1 var(--mono); color: var(--ink); background: var(--bg); border: 2px solid var(--ink); border-radius: 999px; padding: .45rem .55rem .45rem .8rem; box-shadow: 2px 2px 0 var(--ink); cursor: pointer; -webkit-tap-highlight-color: transparent; }
+  .menu-btn:active { transform: translate(1px,1px); box-shadow: 1px 1px 0 var(--ink); }
+  .mb-i { position: relative; width: 1.35rem; height: 1.35rem; border-radius: 50%; background: var(--yellow); border: 1.5px solid var(--ink); }
+  .mb-i b { position: absolute; left: 25%; width: 50%; height: 1.5px; background: var(--ink); transition: transform .3s cubic-bezier(.2,.8,.2,1), top .3s; }
+  .mb-i b:first-child { top: 38%; } .mb-i b:last-child { top: 58%; }
+  .menu-btn[aria-expanded="true"] .mb-i b:first-child { top: 48%; transform: rotate(45deg); }
+  .menu-btn[aria-expanded="true"] .mb-i b:last-child { top: 48%; transform: rotate(-45deg); }
+  .bar nav { position: absolute; z-index: 60; top: calc(100% + .35rem); right: 0; left: 0; display: grid; gap: 0; padding: .4rem; background: var(--ink); border-radius: 14px; box-shadow: 4px 4px 0 var(--yellow); font-size: 1rem;
+    opacity: 0; visibility: hidden; transform: translateY(-6px); transition: opacity .22s, transform .22s, visibility 0s .22s; }
+  .bar.open nav { opacity: 1; visibility: visible; transform: none; transition: opacity .22s, transform .22s; }
+  .bar nav a { display: flex; align-items: baseline; gap: .9rem; color: #f4f2ec; padding: .85rem .8rem; border-radius: 9px; font-weight: 500; }
+  .bar nav a + a { border-top: 1px solid rgba(255,255,255,.1); }
+  .bar nav a em { display: inline; font-style: normal; font-size: .7rem; color: var(--yellow); }
+  .bar nav a:hover, .bar nav a:active { color: var(--ink); background: var(--yellow); text-decoration: none; }
+  .bar nav a:active em, .bar nav a:hover em { color: var(--ink); }
+}
+@media (prefers-reduced-motion: reduce) { .bar nav, .mb-i b { transition: none !important; } }
 
 /* ── the top band ───────────────────── */
 .band {
@@ -1070,7 +1091,8 @@ figure { margin: 0; min-width: 0; }
 <div class="wrap">
   <header class="bar">
     <a class="me" href="#top"><i aria-hidden="true">AT</i>Aditya Tiwari</a>
-    <nav aria-label="Sections"><a href="#graph-sec">graph</a><a href="#work">work</a><a href="#road">2026</a><a href="#dash">numbers</a><a href="#contact">about</a></nav>
+    <button class="menu-btn" type="button" aria-expanded="false" aria-controls="siteNav"><span class="mb-l">menu</span><span class="mb-i" aria-hidden="true"><b></b><b></b></span></button>
+    <nav id="siteNav" aria-label="Sections"><a href="#graph-sec"><em>02</em>graph</a><a href="#work"><em>03</em>work</a><a href="#road"><em>04</em>2026</a><a href="#dash"><em>05</em>numbers</a><a href="#contact"><em>06</em>about</a></nav>
   </header>
 </div>
 
@@ -2895,6 +2917,15 @@ const LINKS = [
   viewHome();
 
 })();
+</script>
+<script>
+(()=>{const bar=document.querySelector('header.bar'),btn=bar&&bar.querySelector('.menu-btn');if(!btn)return;
+const set=o=>{bar.classList.toggle('open',o);btn.setAttribute('aria-expanded',o);btn.querySelector('.mb-l').textContent=o?'close':'menu';if(o&&window.SFX&&SFX.tick)try{SFX.tick()}catch(e){}};
+btn.addEventListener('click',e=>{e.stopPropagation();set(!bar.classList.contains('open'))});
+bar.querySelectorAll('nav a').forEach(a=>a.addEventListener('click',()=>set(false)));
+document.addEventListener('click',e=>{if(!bar.contains(e.target))set(false)});
+document.addEventListener('keydown',e=>{if(e.key==='Escape'&&bar.classList.contains('open')){set(false);btn.focus()}});
+addEventListener('scroll',()=>{if(bar.classList.contains('open')&&scrollY>bar.offsetTop+bar.offsetHeight+200)set(false)},{passive:true});})();
 </script>
 
 </html>
