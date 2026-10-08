@@ -153,6 +153,9 @@ button { font: inherit; color: inherit; }
 /* graph */
 .stage { position: relative; min-width: 0; min-height: 0; overflow: hidden; background: transparent; }
 #graph { width: 100%; height: 100%; display: block; cursor: grab; touch-action: none; }
+@media (pointer: coarse) { #graph { touch-action: pan-y; } }
+.touch-hint { display: none; }
+@media (pointer: coarse) { .touch-hint { display: block; position: absolute; left: .8rem; top: .9rem; font-family: var(--mono); font-size: .66rem; color: var(--muted); background: var(--paper); border: 1px solid var(--rule); border-radius: 99px; padding: .15rem .55rem; pointer-events: none; } }
 #graph:active { cursor: grabbing; }
 .legend { position: absolute; left: 1rem; bottom: 1rem; display: flex; flex-wrap: wrap; gap: 0.4rem 1rem; font-family: var(--mono); font-size: 0.72rem; color: var(--ink); background: var(--paper); border: 1.5px solid var(--ink); border-radius: 8px; box-shadow: 2px 2px 0 var(--ink); padding: 0.4rem 0.7rem; max-width: calc(100% - 2rem); }
 .legend i { display: inline-block; vertical-align: -0.1rem; margin-right: 0.35rem; }
@@ -557,6 +560,7 @@ figure { margin: 0; min-width: 0; }
 .book.single .board.l, .book.single .edge.l { display: none; }
 .book.single .board.r { left: 0; width: calc(100% + 12px); border-left: 2px solid var(--ink); border-radius: 6px 9px 9px 6px; }
 .book.single .leaf, .book.single .base { left: 0; width: 100%; }
+.book.single .leaf.turned { visibility: hidden; transition: transform .95s cubic-bezier(.645,.045,.355,1), visibility 0s .95s; }
 .book.single .ribbon { left: auto; right: 2.2rem; }
 .book.single .pg { font-size: calc(var(--pw) * .036); padding: 2.2em 2.1em 1.5em; }
 .book.single .face.cover { font-size: calc(var(--pw) * .036); }
@@ -967,9 +971,17 @@ figure { margin: 0; min-width: 0; }
   .swap-hint { left: auto; right: 4%; top: 30%; }
 }
 @media (max-width: 30rem) {
-  .hero-photo { height: calc(72% - var(--tick)); }
-  .hero-name .hero-sub { display: none; }
+  .hero { height: 43rem; }
+  .hero-photo { height: calc(70% - var(--tick)); bottom: calc(var(--tick) + 3.2rem); }
+  .hero-name { top: 1.4rem; gap: .5rem; }
+  .hero-name .hero-sub { display: block; font-size: .8rem; line-height: 1.35; }
   .hero-loc { display: none; }
+  .hero-role { left: 1rem; right: 1rem; top: auto; bottom: calc(var(--tick) + .9rem); max-width: none; text-align: left; z-index: 4;
+    background: var(--paper); border: 2px solid var(--ink); border-radius: 14px; box-shadow: 3px 3px 0 var(--ink); padding: .75rem .9rem .8rem; }
+  .hero-role p { font-size: 1.15rem; line-height: 1.1; }
+  .hero-role p span { display: block; font-size: .78rem; margin-top: .25rem; }
+  .hero-role .open { display: inline-flex; margin-top: .6rem; font-size: .68rem; box-shadow: none; padding: .15rem .6rem; }
+  .swap-hint { top: 34%; right: 4%; }
   .hero-role { bottom: calc(var(--tick) + .8rem); }
 }
 
@@ -1033,7 +1045,10 @@ figure { margin: 0; min-width: 0; }
   .r-nowbox { -webkit-mask-image: linear-gradient(90deg, transparent, #000 10%, #000 88%, transparent); mask-image: linear-gradient(90deg, transparent, #000 10%, #000 88%, transparent); }
   .r-now { display: inline-block; overflow: visible; text-overflow: clip; padding-left: 100%; animation: rTicker 9s linear infinite; }
   .radio:not(.on) .r-now { animation: none; padding-left: 0; }
-  .radio:not(.on)::after { content: "radio"; }
+  .radio:not(.on)::after { content: none; }
+  .radio:not(.on) { padding: .3rem; border-radius: 50%; }
+  .radio:not(.on) .r-power::after { content: "FM"; position: absolute; font-family: var(--mono); font-size: .5rem; letter-spacing: .08em; color: #d9d6cc; transform: translateY(1.05rem); }
+  .r-power { position: relative; }
 }
 
 /* ── the dashboard: 2026 read off the car ─────────────── */
@@ -1459,7 +1474,7 @@ figure { margin: 0; min-width: 0; }
                     <a class="round" href="https://github.com/adityatiwari101104" aria-label="GitHub"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 .5a11.5 11.5 0 0 0-3.64 22.4c.58.1.79-.25.79-.56v-2c-3.2.7-3.88-1.37-3.88-1.37-.53-1.33-1.28-1.69-1.28-1.69-1.05-.71.08-.7.08-.7 1.16.08 1.77 1.19 1.77 1.19 1.03 1.77 2.7 1.26 3.36.96.1-.75.4-1.26.73-1.55-2.55-.29-5.24-1.28-5.24-5.69 0-1.26.45-2.29 1.19-3.1-.12-.29-.52-1.46.11-3.05 0 0 .97-.31 3.17 1.18a11 11 0 0 1 5.77 0c2.2-1.49 3.17-1.18 3.17-1.18.63 1.59.23 2.76.11 3.05.74.81 1.19 1.84 1.19 3.1 0 4.42-2.7 5.39-5.26 5.68.41.36.78 1.06.78 2.14v3.17c0 .31.21.67.8.56A11.5 11.5 0 0 0 12 .5Z"/></svg></a>
                     <a class="round" href="https://x.com/AdityaT44748663" aria-label="X"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M17.8 2.5h3.3l-7.2 8.2 8.5 10.8h-6.6l-5.2-6.7-6 6.7H1.3l7.7-8.8L.9 2.5h6.8l4.7 6.1zm-1.2 17h1.8L7.4 4.3H5.4z"/></svg></a>
                     <a class="round" href="https://www.instagram.com/adityaaa.tiwarii/" aria-label="Instagram"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 7.3A4.7 4.7 0 1 0 16.7 12 4.7 4.7 0 0 0 12 7.3Zm0 7.7a3 3 0 1 1 3-3 3 3 0 0 1-3 3Zm6-7.9a1.1 1.1 0 1 1-1.1-1.1A1.1 1.1 0 0 1 18 7.1ZM21.9 8.2a5.4 5.4 0 0 0-1.5-3.9 5.5 5.5 0 0 0-3.9-1.5C15 2.7 9 2.7 7.5 2.8a5.5 5.5 0 0 0-3.9 1.5 5.4 5.4 0 0 0-1.5 3.9C2 9.7 2 15.3 2.1 16.8a5.4 5.4 0 0 0 1.5 3.9 5.5 5.5 0 0 0 3.9 1.5c1.5.1 7.5.1 9 0a5.4 5.4 0 0 0 3.9-1.5 5.5 5.5 0 0 0 1.5-3.9c.1-1.5.1-7.1 0-8.6Zm-2.1 10.2a3.1 3.1 0 0 1-1.7 1.7c-1.2.5-4 .4-5.3.4s-4.1.1-5.3-.4a3.1 3.1 0 0 1-1.7-1.7c-.5-1.2-.4-4-.4-5.3s-.1-4.1.4-5.3a3.1 3.1 0 0 1 1.7-1.7C8.9 5.6 11.7 5.7 13 5.7s4.1-.1 5.3.4a3.1 3.1 0 0 1 1.7 1.7c.5 1.2.4 4 .4 5.3s.1 4.1-.5 5.3Z"/></svg></a>
-                    <span class="pill">Résumé</span>
+                    
                   </span>
                 </div>
                 <div class="scr-hello">Hello!</div>
@@ -1504,7 +1519,7 @@ figure { margin: 0; min-width: 0; }
     <p>Right now I'm going deep on deep learning and distributed systems, practising DSA every day, and looking for an AI engineering internship.</p>
     <div class="m-mail"><span class="addr" id="addr2">adityatiwari101104@gmail.com</span><button class="copy" id="copy2" type="button">copy address</button></div>
     <div class="m-phone">phone <span class="tel">+91 70674 16148</span></div>
-    <div class="m-links"><a href="https://github.com/adityatiwari101104">GitHub</a><a href="https://www.linkedin.com/in/aditya-tiwari-64b959343">LinkedIn</a><a href="https://x.com/AdityaT44748663">X</a><a href="https://www.instagram.com/adityaaa.tiwarii/">Instagram</a><a href="https://pypi.org/user/adityatiwari101104/">PyPI</a><span>Résumé: linked in the production build</span></div>
+    <div class="m-links"><a href="https://github.com/adityatiwari101104">GitHub</a><a href="https://www.linkedin.com/in/aditya-tiwari-64b959343">LinkedIn</a><a href="https://x.com/AdityaT44748663">X</a><a href="https://www.instagram.com/adityaaa.tiwarii/">Instagram</a><a href="https://pypi.org/user/adityatiwari101104/">PyPI</a></div>
   </div>
 
   <div class="wrap">
@@ -2903,11 +2918,13 @@ const LINKS = [
   }
   sim.on("tick", draw);
 
-  const zoom = d3.zoom().scaleExtent([0.3, 3]).on("zoom", e => root.attr("transform", e.transform));
+  const coarse = matchMedia("(pointer: coarse)").matches;
+  const zoom = d3.zoom().scaleExtent([0.3, 3]).filter(e => (!e.ctrlKey || e.type === "wheel") && !e.button && (!coarse || !e.touches || e.touches.length > 1)).on("zoom", e => root.attr("transform", e.transform));
+  if (coarse) { const th = document.createElement("span"); th.className = "touch-hint"; th.textContent = "two fingers to move · tap a node"; svg.node().parentNode.appendChild(th); }
   svg.call(zoom).on("dblclick.zoom", null);
   function fitTo(list, dur = 700) {
     if (!W() || !H()) return;
-    const pts = list.length ? list : nodes;
+    const pts = list.length ? list : (W() < 560 ? nodes.filter(n => ["person", "project", "research", "learning", "people"].includes(n.type)) : nodes);
     const xs = pts.map(p => p.x), ys = pts.map(p => p.y);
     const x0 = Math.min(...xs) - 90, x1 = Math.max(...xs) + 140, y0 = Math.min(...ys) - 60, y1 = Math.max(...ys) + 60;
     const k = Math.min(2, 0.92 * Math.min(W() / (x1 - x0), H() / (y1 - y0)));
