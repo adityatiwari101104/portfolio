@@ -30,7 +30,7 @@
   --rule: #d8d5cb;
   --gridline: rgba(18,18,18,.055);
   --yellow: #f6cf45;
-  --cloth: #3b2d23; --cloth-2: #2c211a; --gilt: #cfae62;
+  --cloth: #1c1b19; --cloth-2: #121110; --gilt: #cfae62; --linen: #eee7d8;
   --yellow-soft: #fbefc4;
   --sans: "Archivo", "Helvetica Neue", Arial, sans-serif;
   --mono: "IBM Plex Mono", ui-monospace, "SF Mono", Menlo, Consolas, monospace;
@@ -498,19 +498,33 @@ figure { margin: 0; min-width: 0; }
 
 /* cover */
 .face.cover {
-  background-color: var(--cloth); color: var(--gilt); display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center;
-  background-image: repeating-linear-gradient(45deg, rgba(255,255,255,.03) 0 1px, transparent 1px 4px), repeating-linear-gradient(-45deg, rgba(0,0,0,.08) 0 1px, transparent 1px 4px), radial-gradient(ellipse at 60% 40%, rgba(255,235,200,.07), transparent 65%), linear-gradient(90deg, rgba(0,0,0,.35), transparent 7%);
-  box-shadow: inset 0 0 0 1.1em var(--cloth), inset 0 0 0 calc(1.1em + 1.5px) var(--gilt), inset 0 0 0 calc(1.5em + 1.5px) var(--cloth), inset 0 0 0 calc(1.5em + 2.5px) rgba(207,174,98,.55);
-  font-size: calc(var(--pw) * .031); border-radius: 0 6px 6px 0;
+  font-size: calc(var(--pw) * .031); border-radius: 0 6px 6px 0; color: #1d1b18; display: flex; flex-direction: column; align-items: center; text-align: center;
+  padding: 2.4em 2.2em 2.2em 3.6em;
+  background-color: var(--linen);
+  background-image:
+    repeating-linear-gradient(0deg, rgba(60,45,20,.045) 0 1px, transparent 1px 3px),
+    repeating-linear-gradient(90deg, rgba(60,45,20,.04) 0 1px, transparent 1px 3px),
+    radial-gradient(ellipse at 65% 35%, rgba(255,255,255,.55), transparent 60%),
+    radial-gradient(ellipse at 100% 100%, rgba(120,90,40,.10), transparent 55%);
+  box-shadow: inset 0 0 0 1px rgba(0,0,0,.15);
 }
-.cover .t { text-shadow: 0 1px 0 rgba(0,0,0,.45), 0 -1px 0 rgba(255,240,200,.12); font-family: var(--sans); font-weight: 900; font-variation-settings: "wdth" 118; font-size: 4.6em; letter-spacing: -.045em; line-height: .86; }
-.cover .by { font-family: "EB Garamond", Georgia, serif; font-style: italic; font-size: 1.6em; margin-top: .5em; }
-.cover .orn { display: flex; align-items: center; gap: .7em; margin: 1.6em 0; }
-.cover .orn i { width: 4em; height: 1.5px; background: var(--gilt); }
-.cover .orn b { width: .55em; height: .55em; background: var(--gilt); transform: rotate(45deg); }
-.cover .vol { font-family: var(--mono); font-size: .72em; letter-spacing: .24em; text-transform: uppercase; }
-.cover .hint { position: absolute; bottom: 3.4em; font-family: var(--mono); font-size: .7em; color: var(--ink); background: #f3e4c3; border: 1.5px solid var(--ink); border-radius: 99px; padding: .3em .9em; box-shadow: 2px 2px 0 var(--ink); }
-
+.cover .spine { position: absolute; left: 0; top: 0; bottom: 0; width: 9%; background: var(--cloth) repeating-linear-gradient(45deg, rgba(255,255,255,.03) 0 1px, transparent 1px 4px); box-shadow: inset -6px 0 10px -6px rgba(0,0,0,.6), 1px 0 0 rgba(0,0,0,.4); }
+.cover .spine::after { content: ""; position: absolute; right: 22%; top: 0; bottom: 0; width: 1px; background: rgba(255,255,255,.12); }
+.cv-top { width: 100%; display: flex; justify-content: space-between; font-family: var(--mono); font-size: .62em; letter-spacing: .2em; text-transform: uppercase; color: #6d6455; border-bottom: 1px solid rgba(29,27,24,.35); padding-bottom: .8em; }
+.cover .t { font-family: "EB Garamond", Georgia, serif; font-weight: 600; font-size: 6em; line-height: .9; letter-spacing: -.02em; margin-top: .6em; color: #1d1b18; text-shadow: 0 1px 0 rgba(255,255,255,.6); }
+.cover .by { font-family: "EB Garamond", Georgia, serif; font-style: italic; font-size: 1.5em; margin-top: .35em; color: #4a4338; }
+.cv-map { width: 100%; margin: auto 0; overflow: visible; }
+.cv-map .lk path { fill: none; stroke: #1d1b18; stroke-width: 1.2; stroke-dasharray: 4 4; opacity: .7; }
+.cv-map .nd circle { fill: var(--linen); stroke: #1d1b18; stroke-width: 1.6; }
+.cv-map .nd circle.on { fill: var(--yellow); }
+.cv-map .lb text { font-family: var(--mono); font-size: 10.5px; fill: #3a352d; text-anchor: middle; letter-spacing: .02em; }
+.cv-foot { margin-top: 0; width: 100%; border-top: 1px solid rgba(29,27,24,.35); padding-top: .8em; font-family: "EB Garamond", Georgia, serif; font-style: italic; font-size: 1em; color: #4a4338; text-align: left; }
+.cover .seal { position: absolute; right: 1.4em; bottom: 1.1em; width: 3.2em; height: 3.2em; border-radius: 50%; background: var(--yellow); border: 1.5px solid #1d1b18; display: grid; place-content: center; font-family: "EB Garamond", Georgia, serif; font-weight: 600; font-size: 1.5em; line-height: .85; transform: rotate(-10deg); box-shadow: 2px 2px 0 rgba(29,27,24,.85); }
+.cover .seal b { font-size: 1.5em; font-weight: 600; line-height: .8; }
+.cover .seal small { font-family: var(--mono); font-size: .3em; letter-spacing: .1em; text-transform: uppercase; font-weight: 500; }
+.cv-foot em { display: block; font-style: normal; font-family: var(--mono); font-size: .62em; letter-spacing: .12em; text-transform: uppercase; color: #6d6455; margin-top: .5em; }
+.cover .hint { position: absolute; top: 50%; right: -0.2em; transform: translateY(-50%); font-family: var(--mono); font-size: .66em; color: var(--ink); background: var(--paper); border: 1.5px solid var(--ink); border-radius: 99px 0 0 99px; border-right: 0; padding: .35em .8em; box-shadow: none; display: none; }
+.cv-hint { display: none; }
 .wb-ctl { display: flex; justify-content: center; align-items: center; gap: 1rem 1.4rem; flex-wrap: wrap; margin-top: 4.6rem; font-family: var(--mono); font-size: .8rem; color: var(--ink-2); position: relative; z-index: 1; }
 .wb-ctl button { font-family: var(--mono); font-size: .8rem; background: var(--paper); border: 1.5px solid var(--ink); border-radius: 99px; padding: .4rem .9rem; box-shadow: 2px 2px 0 var(--ink); cursor: pointer; }
 .wb-ctl button:hover:not(:disabled) { background: var(--yellow); }
@@ -1827,7 +1841,17 @@ const LINKS = [
       page(["The Work", "Fin"], `<div class="fin"><span class="big">fin.</span><p>If you're building AI that has to be right, write to me.</p><p class="mail">adityatiwari101104@gmail.com</p><button class="again" type="button" data-go="0">↺ back to the first page</button></div><div style="flex:1"></div>`, "12"),
     ];
     const NAMES = ["Contents", "ContribOS", "writeupsc", "Praman Setu", "CSC AI Copilot", "Notes"];
-    const COVER = `<div class="face front cover"><div class="t">THE<br>WORK</div><div class="by">of Aditya Tiwari</div><div class="orn"><i></i><b></b><i></i></div><div class="vol">Volume I · 2026</div><span class="hint">click to open</span></div>`;
+    const COVER = `<div class="face front cover"><span class="spine" aria-hidden="true"></span>
+<div class="cv-top"><span>Vol. I</span><span>Ex libris</span><span>2026</span></div>
+<div class="t">The Work</div><div class="by">of Aditya Tiwari</div>
+<svg class="cv-map" viewBox="0 -6 300 160" aria-hidden="true">
+<g class="lk"><path d="M52 44 L150 26"/><path d="M150 26 L246 60"/><path d="M52 44 L118 112"/><path d="M118 112 L246 60"/><path d="M150 26 L118 112"/></g>
+<g class="nd"><circle cx="52" cy="44" r="7"/><circle cx="150" cy="26" r="7" class="on"/><circle cx="246" cy="60" r="7"/><circle cx="118" cy="112" r="7"/></g>
+<g class="lb"><text x="52" y="28">writeupsc</text><text x="150" y="10">ContribOS</text><text x="246" y="44">Praman Setu</text><text x="118" y="134">CSC AI Copilot</text></g>
+</svg>
+<div class="cv-foot"><span>Four projects, told properly.</span><em>click to open →</em></div>
+<span class="seal" aria-hidden="true"><b>4</b><small>chapters</small></span>
+<span class="hint">click to open</span></div>`;
     const face = (html, side) => `<div class="face ${side}"><div class="pg">${html}</div></div>`;
 
     let leaves = [], cur = 0, single = false, base = null, zCounter = 0, opened = false;
