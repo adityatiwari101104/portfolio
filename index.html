@@ -181,6 +181,14 @@ button { font: inherit; color: inherit; }
 .n-person circle { fill: var(--yellow); stroke: var(--ink); stroke-width: 2; }
 .n-people text, .n-place text { fill: var(--ink-2); font-size: 12px; font-style: italic; paint-order: stroke; stroke: var(--bg); stroke-width: 4px; }
 .n-people circle, .n-place circle { fill: var(--paper); stroke: var(--ink); stroke-width: 1.4; }
+.node.n-people.has-site circle { fill: var(--yellow); }
+.node.n-people.has-site text { fill: var(--ink); font-style: normal; font-weight: 700; text-decoration: underline; }
+.visit { display: flex; justify-content: space-between; align-items: center; gap: .8rem; margin-top: 1rem; padding: .7rem .9rem; background: var(--yellow); color: var(--ink); border: 2px solid var(--ink); border-radius: 12px; box-shadow: var(--shadow); text-decoration: none; transition: transform .12s, box-shadow .12s; }
+.visit span { font-family: var(--mono); font-size: .72rem; text-transform: uppercase; letter-spacing: .06em; }
+.visit b { font-weight: 800; font-size: 1.05rem; white-space: nowrap; }
+.visit span { white-space: nowrap; }
+.visit:hover { transform: translate(-1px,-1px); box-shadow: 4px 4px 0 var(--ink); text-decoration: none; }
+a.gl { text-decoration-color: var(--yellow); text-decoration-thickness: 2px; }
 .node.sel rect, .node.sel circle { stroke: var(--ink); stroke-width: 2.5; }
 .n-project.sel rect { fill: var(--yellow); }
 .dim { opacity: 0.18; transition: opacity .25s; }
@@ -1542,7 +1550,7 @@ const NODES = [
   { id: "t_twilio", type: "method", label: "Twilio", tags: "twilio whatsapp" },
   { id: "t_k8s", type: "method", label: "Kubernetes", tags: "kubernetes k8s devops" },
 
-  { id: "gaurav", type: "people", label: "Gaurav Singh", tags: "gaurav singh collaborator teammate built with team" },
+  { id: "gaurav", type: "people", label: "Gaurav Singh ↗", site: "https://gauravgives.lol", text: "Friend and collaborator. We built writeupsc, Praman Setu and CSC AI Copilot together. Click through to his portfolio.", tags: "gaurav singh collaborator teammate built with team portfolio gauravgives" },
   { id: "iiitnr", type: "place", label: "IIIT Naya Raipur", tags: "college university institute" },
   { id: "unime", type: "place", label: "University of Messina", tags: "italy university research" },
 ];
@@ -1582,7 +1590,7 @@ const LINKS = [
       <dl class="facts">
         <div><dt>Studying</dt><dd>B.Tech, Data Science and AI, IIIT Naya Raipur, 2024–28</dd></div>
         <div><dt>Built solo</dt><dd>ContribOS, live on PyPI</dd></div>
-        <div><dt>Built with</dt><dd>Gaurav Singh: writeupsc (800+ sign-ups), Praman Setu and CSC AI Copilot (both hackathon winners)</dd></div>
+        <div><dt>Built with</dt><dd><a class="gl" href="https://gauravgives.lol" target="_blank" rel="noopener">Gaurav Singh</a>: writeupsc (800+ sign-ups), Praman Setu and CSC AI Copilot (both hackathon winners)</dd></div>
         <div><dt>Research</dt><dd>Healthcare ML, University of Messina, ongoing</dd></div>
         <div><dt>Looking for</dt><dd>AI engineering internships</dd></div>
         <div><dt>Contact</dt><dd><a href="#contact">adityatiwari101104@gmail.com</a></dd></div>
@@ -1599,6 +1607,7 @@ const LINKS = [
       <div class="insp-type" style="margin-top:.9rem"><span>${esc(TYPE_NAME[n.type])}</span><span>${esc(n.year || "")}</span></div>
       <div class="insp-title">${esc(n.label)}</div>`;
     if (n.status) h += `<span class="status${/Prototype|Team|Ongoing|Studying/.test(n.status) ? " quiet" : ""}">${esc(n.status)}</span>`;
+    if (n.site) h += `<a class="visit" href="${n.site}" target="_blank" rel="noopener"><span>visit his portfolio</span><b>${esc(n.site.replace(/^https?:\/\//, ""))} ↗</b></a>`;
     if (n.text) h += `<p>${esc(n.text)}</p>`;
     if (n.detail) h += `<p>${esc(n.detail)}</p>`;
     if (n.role) h += `<p class="part">${esc(n.role)}</p>`;
@@ -1608,7 +1617,7 @@ const LINKS = [
       h += `<h4>Evidence for</h4><div class="nbrs">${of.map(m => `<button class="nbr" data-go="${m.id}">${esc(m.label)}</button>`).join("")}</div>`;
       if (n.url) h += `<div class="links"><a href="${n.url}">open source ↗</a></div>`;
     }
-    if (n.links) h += `<div class="links">${n.links.map(([t, u]) => `<a href="${u}">${esc(t)} ↗</a>`).join("")}</div>`;
+    if (n.links) h += `<div class="links">${n.links.map(([t, u]) => `<a href="${u}" target="_blank" rel="noopener">${esc(t)} ↗</a>`).join("")}</div>`;
     if (n.type !== "evidence" && others.length) h += `<h4>Connected to</h4><div class="nbrs">${others.map(m => `<button class="nbr" data-go="${m.id}">${esc(m.label)}</button>`).join("")}</div>`;
     insp.innerHTML = h;
   }
@@ -1780,7 +1789,7 @@ const LINKS = [
         <p class="cap">The benchmark I published. My own feature barely wins, so the tool leans on what reviewers asked instead.</p>
         <div class="fn">v0.2.2 · 40 tests on Linux, macOS and Windows · about 980 downloads in week one, per pepy.tech, CI included</div>`, "4"),
 
-      page(["The Work", "Chapter II"], `<div class="plate r"><div class="cv cv-upsc"><div class="q">“Discuss the role of civil society in strengthening democracy.”</div><div class="stampc">3<br>changes</div><span class="wm">writeupsc</span></div></div><div class="chap">Chapter the second</div><div class="pt">writeupsc</div><p class="pmeta">2026 · with Gaurav Singh · live, 800+ sign-ups</p>
+      page(["The Work", "Chapter II"], `<div class="plate r"><div class="cv cv-upsc"><div class="q">“Discuss the role of civil society in strengthening democracy.”</div><div class="stampc">3<br>changes</div><span class="wm">writeupsc</span></div></div><div class="chap">Chapter the second</div><div class="pt">writeupsc</div><p class="pmeta">2026 · with <a class="gl" href="https://gauravgives.lol" target="_blank" rel="noopener">Gaurav Singh</a> · live, 800+ sign-ups</p>
         <p class="dc">UPSC aspirants write Mains answers by hand and wait days for a coaching centre to mark them. writeupsc reads a photo of the page, finds the closest answers from real toppers, and names the few differences that cost marks.</p>
         <p>It never rewrites the answer, so the student keeps their own voice.</p>
         <p class="mine"><b>My part:</b> the retrieval layer that matches an answer to the closest topper answers, and the evaluation page that sets them side by side.</p>
@@ -1788,7 +1797,7 @@ const LINKS = [
       page(["writeupsc", "Plate II"], `${ART_UPSC}<p class="cap">Your answer beside one that scored, with the gap named in three changes.</p>
         <div class="fn">5,497 topper answers from 122 toppers, per writeupsc.app · 800+ sign-ups as of October 2026</div>`, "6"),
 
-      page(["The Work", "Chapter III"], `<div class="plate"><div class="cv cv-praman"><div class="ct">Certificate of evidence</div><div class="nm">R. Kumar Sahu &nbsp;⇄&nbsp; Ramesh K. Sao</div><div class="seal">LINKED</div><span class="wm">Praman Setu</span></div></div><div class="chap">Chapter the third</div><div class="pt">Praman Setu</div><p class="pmeta">September 2026 · with Gaurav Singh · hackathon winner</p>
+      page(["The Work", "Chapter III"], `<div class="plate"><div class="cv cv-praman"><div class="ct">Certificate of evidence</div><div class="nm">R. Kumar Sahu &nbsp;⇄&nbsp; Ramesh K. Sao</div><div class="seal">LINKED</div><span class="wm">Praman Setu</span></div></div><div class="chap">Chapter the third</div><div class="pt">Praman Setu</div><p class="pmeta">September 2026 · with <a class="gl" href="https://gauravgives.lol" target="_blank" rel="noopener">Gaurav Singh</a> · hackathon winner</p>
         <p class="dc">In the problem statement's data, caste certificates were a fifth of service applications but three in five rejections, usually for missing proof. A parent's earlier certificate is strong proof, if you can find it across different spellings and scripts.</p>
         <p class="mine"><b>My part:</b> the record-linkage model, built on Splink's Fellegi–Sunter framework, and the API that serves its matches. The tool shows each likely relative with the evidence for the match. An officer decides.</p>
         <div class="plinks"><a href="https://github.com/GAURAV-1313/praman-setu">repository</a><button class="ingraph" type="button" data-node="praman">show in graph ↑</button></div>`, "7"),
@@ -1796,7 +1805,7 @@ const LINKS = [
         <div class="bignums"><b>22%</b><span>of applications,</span><b class="y">61%</b><span>of rejections</span></div>
         <div class="fn">Sewa Setu Innovation Hackathon, problem statement 1 · 0.89 precision on held-out data · 80 passing tests · the names drawn above are illustrative</div>`, "8"),
 
-      page(["The Work", "Chapter IV"], `<div class="plate r"><div class="cv cv-csc"><div class="badge">hack-<br>athon<br>winner</div><div class="chat"><span>Send your documents</span><span class="me">Aadhaar ✓ · PAN ✓</span><span class="no">Name on form ≠ Aadhaar</span></div><span class="wm">CSC AI Copilot</span></div></div><div class="chap">Chapter the fourth</div><div class="pt">CSC AI Copilot</div><p class="pmeta">2026 · with Gaurav Singh · hackathon winner · prototype</p>
+      page(["The Work", "Chapter IV"], `<div class="plate r"><div class="cv cv-csc"><div class="badge">hack-<br>athon<br>winner</div><div class="chat"><span>Send your documents</span><span class="me">Aadhaar ✓ · PAN ✓</span><span class="no">Name on form ≠ Aadhaar</span></div><span class="wm">CSC AI Copilot</span></div></div><div class="chap">Chapter the fourth</div><div class="pt">CSC AI Copilot</div><p class="pmeta">2026 · with <a class="gl" href="https://gauravgives.lol" target="_blank" rel="noopener">Gaurav Singh</a> · hackathon winner · prototype</p>
         <p class="dc">Operators at Common Service Centres check Aadhaar, PAN and form fields by hand. The team built a copilot that reads the documents, flags mismatches and scores the risk before the citizen reaches the counter.</p>
         <p class="mine"><b>My part:</b> the WhatsApp pre-check bot and its API integration with the main system.</p>
         <div class="plinks"><a href="https://github.com/adityatiwari101104/whatsapp-precheck-bot">whatsapp-precheck-bot</a><a href="https://github.com/GAURAV-1313/csc">team repo</a><button class="ingraph" type="button" data-node="csc">show in graph ↑</button></div>`, "9"),
@@ -2792,7 +2801,7 @@ const LINKS = [
 
   const link = gLinks.selectAll("line").data(links).join("line").attr("class", d => "link" + (d.ev ? " ev" : ""));
   const elabel = gLabels.selectAll("text").data(links).join("text").attr("class", "elabel").attr("text-anchor", "middle").text(d => d.l).style("display", "none");
-  const node = gNodes.selectAll("g").data(nodes).join("g").attr("class", d => `node n-${d.type}`).attr("tabindex", 0).attr("role", "button").attr("aria-label", d => `${d.label}, ${TYPE_NAME[d.type]}`);
+  const node = gNodes.selectAll("g").data(nodes).join("g").attr("class", d => `node n-${d.type}${d.site ? " has-site" : ""}`).attr("tabindex", 0).attr("role", "button").attr("aria-label", d => `${d.label}, ${TYPE_NAME[d.type]}`);
 
   node.each(function (d) {
     const g = d3.select(this);
@@ -2890,7 +2899,7 @@ const LINKS = [
     if (zoomIn) { const keep = [id, ...nbrs.get(id).map(x => x.id)].map(i => nodes.find(n => n.id === i)); fitTo(keep); }
   }
   function clearSel() { selected = null; hits = null; paint(null); viewHome(); fitTo([]); }
-  node.on("click", (e, d) => { e.stopPropagation(); d.id === "me" ? clearSel() : select(d.id, false); })
+  node.on("click", (e, d) => { e.stopPropagation(); d.id === "me" ? clearSel() : select(d.id, false); if (d.site && !e.defaultPrevented) window.open(d.site, "_blank", "noopener"); })
       .on("keydown", (e, d) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); select(d.id, true); } })
       .on("mouseenter", (e, d) => { if (!selected && !hits) paint(d.id); })
       .on("mouseleave", () => { if (!selected && !hits) paint(null); });
